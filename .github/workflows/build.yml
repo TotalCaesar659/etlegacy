@@ -144,7 +144,6 @@ jobs:
         with:
           arch: aarch64
           distro: ubuntu20.04
-          shell: bash
           run: |
             apt-get update -q -y
             apt-get -y install build-essential libudev-dev libwebp-dev automake zlib1g \
