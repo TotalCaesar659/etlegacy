@@ -171,7 +171,7 @@ jobs:
     runs-on: ubuntu-16.04
     container:
       image: etlegacy/lnx-build:centos7
-    needs: [ lnx64-mod, osx-mod, win-mod ]
+    needs: [ lnx64-mod, osx-mod, win-mod, raspberry_pi-mod ]
     steps:
       - uses: actions/checkout@v2
         with:
@@ -199,7 +199,7 @@ jobs:
         shell: bash
         working-directory: build/legacy
         run: |
-          zip -rvj legacy_*.pk3 win-mod/*.dll lnx64-mod/*.so osx-mod/*
+          zip -rvj legacy_*.pk3 win-mod/*.dll lnx64-mod/*.so osx-mod/* raspberry_pi-mod/*
 
       - uses: actions/upload-artifact@v2
         with:
@@ -226,7 +226,7 @@ jobs:
 #  |_|      |_| |_| |_|  \__,_| |_|   | .__/   \__,_|  \___| |_|\_\  \__,_|  \__, |  \___| |___/
 #                                     | |                                     __/ |
 #                                     |_|                                    |___/
-# Generate the final packages for 64lnx, Osx and Windows
+# Generate the final packages for 64lnx, Osx, Windows and Raspberry Pi 3/4
   lnx64:
     runs-on: ubuntu-16.04
     needs: [ lnx32 ]
@@ -343,6 +343,48 @@ jobs:
             build/etlegacy-*.exe
             build/etlegacy-*.zip
 
+  raspberry_pi:
+    runs-on: ubuntu-16.04
+    needs: [ lnx32 ]
+    steps:
+      - uses: actions/checkout@v2.1.0
+        with:
+          submodules: true
+          fetch-depth: 0
+
+      - uses: uraimo/run-on-arch-action@v2.0.5
+        name: Build
+        with:
+          arch: aarch64
+          distro: ubuntu20.04
+          run: |
+            apt-get update -q -y
+            sudo apt-get install build-essential libfreeimage-dev libopenal-dev libpango1.0-dev libsndfile-dev libudev-dev \
+            libasound2-dev libjpeg8-dev libwebp-dev automake libgl1-mesa-glx libjpeg62-turbo libogg0 libopenal1 libvorbis0a \
+            libvorbisfile3 zlib1g libx11-dev libglew-dev libegl1-mesa-dev \
+            nasm autoconf git cmake zip gcc g++ libtool libxrandr-dev x11proto-randr-dev
+            ./easybuild.sh build -RPI -GLES
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: All-mods
+          path: build/legacy
+
+      - name: Display structure of downloaded files
+        run: ls -R
+        working-directory: build/legacy
+
+      - name: Generate packages
+        working-directory: build/
+        run: cpack
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: raspberry_pi-packages
+          path: |
+            build/etlegacy-*.tar.gz
+            build/etlegacy-*.sh
+
 #   _    _           _                       _                         _      _____   _
 #  | |  | |         | |                     | |                       | |    / ____| | |
 #  | |  | |  _ __   | |   ___     __ _    __| |     __ _   _ __     __| |   | |      | |   ___    __ _   _ __    _   _   _ __
@@ -354,7 +396,7 @@ jobs:
 
   upload:
     runs-on: ubuntu-16.04
-    needs: [ lnx32, lnx64, osx, win ]
+    needs: [ lnx32, lnx64, osx, win, raspberry_pi]
     steps:
       - uses: geekyeggo/delete-artifact@v1
         with:
@@ -363,6 +405,7 @@ jobs:
             lnx64-mod
             osx-mod
             win-mod
+            raspberry_pi-mod
 
       - uses: actions/download-artifact@v2
         with:
@@ -376,6 +419,7 @@ jobs:
           find lnx32-packages/ -name '*' -type f -exec curl -H "Authorization: Bearer ${{ secrets.LEGACY_AUTH }}" -X POST -H "Content-Type: multipart/form-data" -F "data=@{}" -F "platform=lnx32" -F"sha=${{ github.sha }}" ${{ secrets.LEGACY_UPLOAD_URL }} \;
           find osx-packages/ -name '*' -type f -exec curl -H "Authorization: Bearer ${{ secrets.LEGACY_AUTH }}" -X POST -H "Content-Type: multipart/form-data" -F "data=@{}" -F "platform=osx" -F"sha=${{ github.sha }}" ${{ secrets.LEGACY_UPLOAD_URL }} \;
           find win-packages/ -name '*' -type f -exec curl -H "Authorization: Bearer ${{ secrets.LEGACY_AUTH }}" -X POST -H "Content-Type: multipart/form-data" -F "data=@{}" -F "platform=win" -F"sha=${{ github.sha }}" ${{ secrets.LEGACY_UPLOAD_URL }} \;
+          find raspberry_pi-packages/ -name '*' -type f -exec curl -H "Authorization: Bearer ${{ secrets.LEGACY_AUTH }}" -X POST -H "Content-Type: multipart/form-data" -F "data=@{}" -F "platform=rpi" -F"sha=${{ github.sha }}" ${{ secrets.LEGACY_UPLOAD_URL }} \;
 
   docker:
     runs-on: ubuntu-16.04
@@ -434,3 +478,4 @@ jobs:
             lnx32-packages
             osx-packages
             win-packages
+            raspberry_pi-packages
