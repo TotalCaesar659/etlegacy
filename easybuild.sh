@@ -296,6 +296,9 @@ parse_commandline() {
 		elif [ "$var" = "-noupdate" ]; then
 			einfo "Will disable autoupdate"
 			FEATURE_AUTOUPDATE=0
+		elif [ "$var" = "-GLES" ]; then
+			einfo "Will build GLES Renderer"
+			FEATURE_RENDERER_GLES=1
 		elif [ "$var" = "-RPI" ]; then
 			einfo "Will enable Raspberry PI build ..."
 			ARM=1
