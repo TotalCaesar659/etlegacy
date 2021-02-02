@@ -365,9 +365,6 @@ jobs:
             nasm autoconf git cmake zip gcc g++ libtool libxrandr-dev x11proto-randr-dev
             ./easybuild.sh build -RPI -GLES -j2
 
-      - name: Set Permission
-        run: chmod -R 777 $GITHUB_WORKSPACE/build/*
-
       - uses: actions/download-artifact@v2
         with:
           name: All-mods
