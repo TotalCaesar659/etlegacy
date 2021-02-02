@@ -345,7 +345,7 @@ jobs:
 
   raspberry_pi:
     runs-on: ubuntu-16.04
-    needs: [ lnx32 ]
+#    needs: [ lnx32 ]
     steps:
       - uses: actions/checkout@v2.1.0
         with:
@@ -384,7 +384,9 @@ jobs:
 
       - name: Generate packages
         working-directory: build/
-        run: cpack
+        run: |
+          cpack
+          cat /home/runner/work/etlegacy/etlegacy/build/_CPack_Packages/Linux/TGZ/PreinstallOutput.log
 
       - uses: actions/upload-artifact@v2
         with:
