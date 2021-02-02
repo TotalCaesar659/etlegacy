@@ -365,6 +365,14 @@ jobs:
             nasm autoconf git cmake zip gcc g++ libtool libxrandr-dev x11proto-randr-dev
             ./easybuild.sh build -RPI -GLES -j2
 
+          # Create an artifacts directory
+          setup: |
+            mkdir -p "${PWD}/build/legacy"
+
+          # Mount the artifacts directory as /artifacts in the container
+          dockerRunArgs: |
+            --volume "${PWD}/build/legacy:/build/legacy"
+
       - uses: actions/download-artifact@v2
         with:
           name: All-mods
