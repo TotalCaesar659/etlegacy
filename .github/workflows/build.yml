@@ -366,7 +366,7 @@ jobs:
 
           setup: |
             mkdir -p "${PWD}/build/legacy"
-            sudo mkdir -p "/__w/etlegacy/etlegacy/build/legacy"
+            mkdir -p "/__w/etlegacy/etlegacy/build/legacy"
 
           # Mount the artifacts directory in the container
           dockerRunArgs: |
