@@ -366,12 +366,10 @@ jobs:
 
           setup: |
             mkdir -p "${PWD}/build/legacy"
-            mkdir -p "/__w/etlegacy/etlegacy/build/legacy"
 
           # Mount the artifacts directory in the container
           dockerRunArgs: |
             --volume "${PWD}/build/legacy:/build/legacy"
-            --volume "/__w/etlegacy/etlegacy/build/legacy:/__w/etlegacy/etlegacy/build/legacy"
 
       - uses: actions/download-artifact@v2
         with:
