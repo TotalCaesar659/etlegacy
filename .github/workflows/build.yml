@@ -364,6 +364,8 @@ jobs:
             nasm autoconf git cmake zip gcc g++ libtool libxrandr-dev x11proto-randr-dev
             ./easybuild.sh build -RPI -GLES -j2
 
+          env: CI: true
+
           setup: |
             mkdir -p "${PWD}/build/legacy"
 
