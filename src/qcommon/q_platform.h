@@ -219,7 +219,7 @@
 #elif defined __arm__
 #define ARCH_STRING "arm" // __ARM_ARCH_'V'__ FIXME: add ARM version to the ARCH_STRING
 #elif defined __aarch64__
-#define ARCH_STRING "arm64"
+#define ARCH_STRING "aarch64"
 #elif defined __cris__
 #define ARCH_STRING "cris"
 #elif defined __hppa__
