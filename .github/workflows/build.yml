@@ -126,10 +126,12 @@ jobs:
           echo $ANDROID_NDK_HOME
           ./gradlew clean build
 
-#      - uses: actions/upload-artifact@v2
-#        with:
-#          name: android-mod
-#          path: |
+      - uses: actions/upload-artifact@v2
+        with:
+          name: android-mod
+          path: |
+            build/legacy/libcgame*.so
+            build/legacy/libui*.so
 
   raspberry_pi-mod:
     runs-on: ubuntu-16.04
