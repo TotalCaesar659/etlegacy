@@ -348,7 +348,7 @@ jobs:
   raspberry_pi:
     runs-on: ubuntu-16.04
     container:
-      image: balenalib/raspberrypi3-debian
+      image: homeassistant/raspberrypi3-homeassistant:latest
     steps:
       - uses: actions/checkout@v2.1.0
         with:
