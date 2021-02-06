@@ -347,39 +347,31 @@ jobs:
 
   raspberry_pi:
     runs-on: ubuntu-16.04
-    container:
-      image: homeassistant/raspberrypi3-homeassistant:latest
     steps:
       - uses: actions/checkout@v2.1.0
         with:
           submodules: true
           fetch-depth: 0
 
-      - name: Build
-        shell: bash
-        run: |
-            apt-get -y install automake libx11-dev glew-dev nasm autoconf git cmake zip gcc g++ libtool
+      - uses: uraimo/run-on-arch-action@v2.0.5
+        name: Build
+        with:
+          arch: aarch64
+          distro: ubuntu20.04
+          run: |
+            apt-get update -q -y
+            apt-get -y install build-essential libfreeimage-dev libopenal-dev libpango1.0-dev libsndfile-dev libudev-dev \
+            libasound2-dev libjpeg8-dev libwebp-dev automake libgl1-mesa-glx libogg0 libopenal1 libvorbis0a \
+            libvorbisfile3 zlib1g libx11-dev libglew-dev libegl1-mesa-dev \
+            nasm autoconf git cmake zip gcc g++ libtool libxrandr-dev x11proto-randr-dev
             ./easybuild.sh build -RPI -GLES -j2
 
-#      - uses: uraimo/run-on-arch-action@v2.0.5
-#        name: Build
-#        with:
-#          arch: aarch64
-#          distro: ubuntu20.04
-#          run: |
-#            apt-get update -q -y
-#            apt-get -y install build-essential libfreeimage-dev libopenal-dev libpango1.0-dev libsndfile-dev libudev-dev \
-#            libasound2-dev libjpeg8-dev libwebp-dev automake libgl1-mesa-glx libogg0 libopenal1 libvorbis0a \
-#            libvorbisfile3 zlib1g libx11-dev libglew-dev libegl1-mesa-dev \
-#            nasm autoconf git cmake zip gcc g++ libtool libxrandr-dev x11proto-randr-dev
-#            ./easybuild.sh build -RPI -GLES -j2	
-
-#          setup: |
-#            mkdir -p "${PWD}/build/legacy"
+          setup: |
+            mkdir -p "${PWD}/build/legacy"
 
           # Mount the artifacts directory in the container
-#          dockerRunArgs: |
-#            --volume "${PWD}/build/legacy:/build/legacy"
+          dockerRunArgs: |
+            --volume "${PWD}/build/legacy:/build/legacy"
 
       - uses: actions/download-artifact@v2
         with:
@@ -392,7 +384,9 @@ jobs:
 
       - name: Generate packages
         working-directory: build/
-        run: cpack
+        run: |
+          echo $CI
+          cpack --verbose --trace-expand
 
       - uses: actions/upload-artifact@v2
         with:
