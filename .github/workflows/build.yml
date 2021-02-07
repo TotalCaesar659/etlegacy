@@ -365,6 +365,7 @@ jobs:
             libvorbisfile3 zlib1g libx11-dev libglew-dev libegl1-mesa-dev \
             nasm autoconf git cmake zip gcc g++ libtool libxrandr-dev x11proto-randr-dev
             ./easybuild.sh build -RPI -GLES -j2
+            cd /build && cpack
 
           setup: |
             mkdir -p "${PWD}/build/legacy"
@@ -382,11 +383,11 @@ jobs:
         run: ls -R
         working-directory: build/legacy
 
-      - name: Generate packages
-        working-directory: build/
-        run: |
-          echo $CI
-          cpack --verbose --trace-expand
+#      - name: Generate packages
+#        working-directory: build/
+#        run: |
+#          echo $CI
+#          cpack --verbose --trace-expand
 
       - uses: actions/upload-artifact@v2
         with:
