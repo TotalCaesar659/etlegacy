@@ -350,18 +350,14 @@ jobs:
     container:
       image: rafal1137/raspbian:latest
     steps:
-#      - uses: actions/checkout@v2.1.0
-#        with:
-#          submodules: true
-#          fetch-depth: 0
+      - uses: actions/checkout@v2.1.0
+        with:
+          submodules: true
+          fetch-depth: 0
 
       - name: Build
         shell: bash
         run: |
-            git clone git://github.com/etlegacy/etlegacy.git
-            cd etlegacy
-            git submodule init
-            git submodule update
             ./easybuild.sh build -RPI -GLES -j2
 
 #      - uses: uraimo/run-on-arch-action@v2.0.5
