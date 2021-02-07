@@ -348,7 +348,7 @@ jobs:
   raspberry_pi:
     runs-on: ubuntu-16.04
     container:
-      image: rafal1137/raspbian:latest
+      image: balenalib/raspberrypi3-debian
     steps:
       - uses: actions/checkout@v2.1.0
         with:
@@ -358,6 +358,7 @@ jobs:
       - name: Build
         shell: bash
         run: |
+            apt-get -y install automake libx11-dev glew-dev nasm autoconf git cmake zip gcc g++ libtool
             ./easybuild.sh build -RPI -GLES -j2
 
 #      - uses: uraimo/run-on-arch-action@v2.0.5
