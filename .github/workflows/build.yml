@@ -365,7 +365,7 @@ jobs:
             libvorbisfile3 zlib1g libx11-dev libglew-dev libegl1-mesa-dev \
             nasm autoconf git cmake zip gcc g++ libtool libxrandr-dev x11proto-randr-dev
             ./easybuild.sh build -RPI -GLES -j2
-            cd /build && cpack
+            cd build && cpack --verbose --trace-expand
 
           setup: |
             mkdir -p "${PWD}/build/legacy"
