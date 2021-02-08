@@ -138,8 +138,6 @@ jobs:
     strategy:
       matrix:
         include:
-          - arch: armv7
-            distro: ubuntu20.04
           - arch: aarch64
             distro: ubuntu20.04
     steps:
@@ -358,8 +356,6 @@ jobs:
     strategy:
       matrix:
         include:
-          - arch: armv7
-            distro: ubuntu20.04
           - arch: aarch64
             distro: ubuntu20.04
 
