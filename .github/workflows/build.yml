@@ -353,6 +353,11 @@ jobs:
           submodules: true
           fetch-depth: 0
 
+      - uses: actions/download-artifact@v2
+        with:
+          name: All-mods
+          path: build/legacy
+
       - uses: uraimo/run-on-arch-action@v2.0.5
         name: Build
         with:
@@ -365,7 +370,7 @@ jobs:
             libvorbisfile3 zlib1g libx11-dev libglew-dev libegl1-mesa-dev \
             nasm autoconf git cmake zip gcc g++ libtool libxrandr-dev x11proto-randr-dev
             ./easybuild.sh build -RPI -GLES -j2
-            cd build && cpack --verbose --trace-expand
+            cd build && cpack
 
           setup: |
             mkdir -p "${PWD}/build/legacy"
@@ -374,20 +379,10 @@ jobs:
           dockerRunArgs: |
             --volume "${PWD}/build/legacy:/build/legacy"
 
-      - uses: actions/download-artifact@v2
-        with:
-          name: All-mods
-          path: build/legacy
 
       - name: Display structure of downloaded files
         run: ls -R
         working-directory: build/legacy
-
-#      - name: Generate packages
-#        working-directory: build/
-#        run: |
-#          echo $CI
-#          cpack --verbose --trace-expand
 
       - uses: actions/upload-artifact@v2
         with:
