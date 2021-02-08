@@ -354,11 +354,6 @@ jobs:
           submodules: true
           fetch-depth: 0
 
-      - uses: actions/download-artifact@v2
-        with:
-          name: All-mods
-          path: build/legacy
-
       - uses: uraimo/run-on-arch-action@v2.0.5
         name: Build
         with:
