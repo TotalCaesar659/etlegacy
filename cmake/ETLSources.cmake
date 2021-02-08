@@ -17,7 +17,11 @@ FILE(GLOB COMMON_SRC_REMOVE
 	"src/qcommon/json_stubs.c"
 )
 
-LIST(REMOVE_ITEM COMMON_SRC ${COMMON_SRC_REMOVE})
+if("${CMAKE_SYSTEM_PROCESSOR}" STREQUAL "armv7l")
+	LIST(REMOVE_ITEM COMMON_SRC COMMON_SRC_REMOVE)
+else
+	LIST(REMOVE_ITEM COMMON_SRC ${COMMON_SRC_REMOVE})
+endif()
 
 # Platform specific code for server and client
 if(UNIX)
