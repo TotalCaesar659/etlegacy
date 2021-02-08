@@ -347,6 +347,7 @@ jobs:
 
   raspberry_pi:
     runs-on: ubuntu-16.04
+    needs: [ lnx32 ]
     steps:
       - uses: actions/checkout@v2.1.0
         with:
