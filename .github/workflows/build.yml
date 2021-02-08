@@ -135,6 +135,13 @@ jobs:
 
   raspberry_pi-mod:
     runs-on: ubuntu-16.04
+    strategy:
+      matrix:
+        include:
+          - arch: armv7
+            distro: ubuntu20.04
+          - arch: aarch64
+            distro: ubuntu20.04
     steps:
       - uses: actions/checkout@v2.1.0
         with:
@@ -142,10 +149,10 @@ jobs:
           fetch-depth: 0
 
       - uses: uraimo/run-on-arch-action@v2.0.5
-        name: Build
+        name: Build on ${{ matrix.arch }}
         with:
-          arch: aarch64
-          distro: ubuntu20.04
+          arch: ${{ matrix.arch }}
+          distro: ${{ matrix.distro }}
           run: |
             apt-get update -q -y
             apt-get -y install build-essential libudev-dev libwebp-dev automake zlib1g \
@@ -348,6 +355,14 @@ jobs:
   raspberry_pi:
     runs-on: ubuntu-16.04
     needs: [ lnx32 ]
+    strategy:
+      matrix:
+        include:
+          - arch: armv7
+            distro: ubuntu20.04
+          - arch: aarch64
+            distro: ubuntu20.04
+
     steps:
       - uses: actions/checkout@v2.1.0
         with:
@@ -355,10 +370,10 @@ jobs:
           fetch-depth: 0
 
       - uses: uraimo/run-on-arch-action@v2.0.5
-        name: Build
+        name: Build on ${{ matrix.arch }}
         with:
-          arch: aarch64
-          distro: ubuntu20.04
+          arch: ${{ matrix.arch }}
+          distro: ${{ matrix.distro }}
           run: |
             apt-get update -q -y
             apt-get -y install build-essential libfreeimage-dev libopenal-dev libpango1.0-dev libsndfile-dev libudev-dev \
