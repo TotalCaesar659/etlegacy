@@ -376,7 +376,7 @@ jobs:
           distro: ${{ matrix.distro }}
           install: |
             case "${{ matrix.distro }}" in
-              ubuntu*|jessie|stretch|buster)
+              ubuntu*)
                 apt-get update -q -y
                 apt-get -y install build-essential libfreeimage-dev libopenal-dev libpango1.0-dev libsndfile-dev libudev-dev \
                 libasound2-dev libjpeg8-dev libwebp-dev automake libgl1-mesa-glx libogg0 libopenal1 libvorbis0a \
