@@ -164,6 +164,7 @@ jobs:
                 apt-get update -q -y
                 apt-get -y install build-essential libudev-dev libwebp-dev automake zlib1g \
                 nasm autoconf git zip gcc g++ libtool wget
+                wget https://github.com/Kitware/CMake/releases/download/v3.19.2/cmake-3.19.2.tar.gz
                 ;;
             esac
           run: |
@@ -172,7 +173,8 @@ jobs:
                 ./easybuild.sh build -RPI -mod
                 ;;
               stretch)
-                wget https://github.com/Kitware/CMake/releases/download/v3.19.2/cmake-3.19.2.tar.gz && tar -xzf cmake-3.19.2.tar.gz && cd ./cmake* && ./configure && make install
+                tar -xzf cmake-3.19.2.tar.gz && cd ./cmake* && ./configure && make install
+                ./easybuild.sh build -RPI -mod
                 ;;
             esac
 
