@@ -163,7 +163,7 @@ jobs:
               stretch)
                 apt-get update -q -y
                 apt-get -y install build-essential libudev-dev libwebp-dev automake zlib1g \
-                nasm autoconf cmake git zip gcc g++ libtool wget
+                nasm autoconf git zip gcc g++ libtool wget
                 ;;
             esac
           run: |
