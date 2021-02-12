@@ -157,6 +157,9 @@ jobs:
             apt-get update -q -y
             apt-get -y install build-essential libudev-dev libwebp-dev automake zlib1g \
             nasm autoconf cmake git zip gcc g++ libtool
+            apt-get -y remove cmake
+            apt-get -y purge cmake
+            wget https://github.com/Kitware/CMake/releases/download/v3.19.2/cmake-3.19.2.tar.gz && tar -xzf cmake-3.19.2.tar.gz && cd ./cmake* && ./configure && make install
             ./easybuild.sh build -RPI -mod
 
       - uses: actions/upload-artifact@v2
