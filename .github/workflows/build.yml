@@ -139,7 +139,7 @@ jobs:
       matrix:
         include:
           - arch: armv7
-            distro: buster
+            distro: stretch
           - arch: aarch64
             distro: ubuntu20.04
     steps:
@@ -359,7 +359,7 @@ jobs:
       matrix:
         include:
           - arch: armv7
-            distro: ubuntu20.04		
+            distro: stretch
           - arch: aarch64
             distro: ubuntu20.04
 
